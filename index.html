@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawHaven — Animal Shelter Foster Care Platform</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Defensive Fallback CSS (Prevents icon explosion & unstyled flash) -->
+    <style>
+        :root {
+            --color-primary: #1B4332;
+            --color-primary-hover: #143326;
+            --color-bg-base: #FBF9F5;
+            --color-surface: #FFFFFF;
+            --color-sage: #8FBC8F;
+            --color-sage-light: #D8E2DC;
+            --color-terracotta: #C86D51;
+            --color-text-main: #1F2421;
+            --color-text-muted: #5C6761;
+            --color-border: #E5E0D8;
+            --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg-base);
+            color: var(--color-text-main);
+            line-height: 1.5;
+        }
+
+        svg {
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+            max-width: 100%;
+        }
+
+        .paw-icon {
+            width: 18px !important;
+            height: 18px !important;
+            max-width: 18px !important;
+        }
+
+        .paw-icon-sm {
+            width: 24px !important;
+            height: 24px !important;
+            max-width: 24px !important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body class="theme-light">
+
+    <!-- =========================================================================
+       1. DEMONSTRATION LOGIN SCREEN (Default Initial Screen)
+       ========================================================================= -->
+    <section id="loginScreen" class="login-screen-wrapper">
+        <div class="login-container">
+
+            <!-- Visual Column (Desktop) -->
+            <div class="login-brand-panel">
+                <div class="brand-overlay"></div>
+                <div class="brand-content">
+                    <div class="brand-badge">
+                        <svg class="paw-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="14" r="4" />
+                            <circle cx="6.5" cy="10.5" r="2.5" />
+                            <circle cx="17.5" cy="10.5" r="2.5" />
+                            <circle cx="9" cy="5.5" r="2" />
+                            <circle cx="15" cy="5.5" r="2" />
+                        </svg>
+                        <span>Shelter Care Network</span>
+                    </div>
+                    <h1 class="brand-title">PawHaven</h1>
+                    <p class="brand-tagline">“Every Animal Deserves a Safe Temporary Home.”</p>
+                    <div class="brand-quote">
+                        <p>Empowering shelter teams and volunteer fosters with structured matching, capacity monitoring,
+                            and comprehensive follow-up tracking.</p>
+                    </div>
+                    <div class="login-footer-meta">
+                        <span>First-Year Academic Capstone Project</span>
+                        <span>Client-Side Architecture</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Column -->
+            <div class="login-form-panel">
+                <div class="form-wrapper">
+                    <header class="form-header">
+                        <div class="mobile-logo">
+                            <svg class="paw-icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="14" r="4" />
+                                <circle cx="6.5" cy="10.5" r="2.5" />
+                                <circle cx="17.5" cy="10.5" r="2.5" />
+                                <circle cx="9" cy="5.5" r="2" />
+                                <circle cx="15" cy="5.5" r="2" />
+                            </svg>
+                            <span>PawHaven</span>
+                        </div>
+                        <h2>Welcome Back to PawHaven</h2>
+                        <p class="form-subtext">Sign in to coordinate foster care, connect animals with suitable homes,
+                            and manage placements.</p>
+                    </header>
+
+                    <!-- Error Alert Banner (Hidden by default) -->
+                    <div id="loginErrorMessage" class="alert-banner alert-danger hidden" style="display: none;"
+                        role="alert">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        <span id="loginErrorText">Invalid credentials. Please verify the demo access details.</span>
+                    </div>
+
+                    <form id="loginForm" novalidate>
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <div class="input-container">
+                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                    <polyline points="22,6 12,13 2,6" />
+                                </svg>
+                                <input type="email" id="loginEmail" placeholder="admin@pawhaven.demo" required
+                                    autocomplete="email">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label for="loginPassword">Password</label>
+                            </div>
+                            <div class="input-container">
+                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                                <input type="password" id="loginPassword" placeholder="••••••••••••" required
+                                    autocomplete="current-password">
+                                <button type="button" id="togglePasswordBtn" class="icon-toggle-btn"
+                                    aria-label="Toggle password visibility">
+                                    <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-utility-row">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="rememberMeCheckbox">
+                                <span class="custom-checkmark"></span>
+                                <span class="checkbox-label">Remember Me on this browser</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" id="submitLoginBtn" class="btn btn-primary btn-block">
+                            <span class="btn-text">Sign In to Dashboard</span>
+                            <div class="btn-spinner hidden" id="loginSpinner"></div>
+                        </button>
+                    </form>
+
+                    <!-- Demonstration Credentials Auto-fill Box -->
+                    <div class="demo-access-card">
+                        <div class="demo-card-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            <span>Faculty Demonstration Access</span>
+                        </div>
+                        <p class="demo-notice">Click below to auto-fill credentials:</p>
+                        <div class="demo-creds-box" id="quickFillDemoCreds" role="button" tabindex="0"
+                            title="Click to auto-fill">
+                            <div><strong>Email:</strong> <code>admin@pawhaven.demo</code></div>
+                            <div><strong>Password:</strong> <code>PawHaven123!</code></div>
+                        </div>
+                        <div class="security-disclaimer">
+                            <small>⚠️ <strong>Academic Note:</strong> Demonstrates client-side session handling.
+                                Production environments require encrypted token sessions and a secure backend.</small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+       2. AUTHENTICATED MANAGEMENT DASHBOARD
+       ========================================================================= -->
+    <div id="dashboardApp" class="dashboard-layout hidden">
+
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon-box">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="14" r="4" />
+                        <circle cx="6.5" cy="10.5" r="2.5" />
+                        <circle cx="17.5" cy="10.5" r="2.5" />
+                        <circle cx="9" cy="5.5" r="2" />
+                        <circle cx="15" cy="5.5" r="2" />
+                    </svg>
+                </div>
+                <div class="brand-name-group">
+                    <span class="brand-name">PawHaven</span>
+                    <span class="brand-sub">Shelter Portal</span>
+                </div>
+                <button id="sidebarCollapseBtn" class="sidebar-toggle-btn" aria-label="Toggle sidebar collapse">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="11 17 6 12 11 7" />
+                        <polyline points="18 17 13 12 18 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">MANAGEMENT</div>
+                <ul class="nav-list">
+                    <li>
+                        <button class="nav-item active" data-section="overview">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="7" height="9" />
+                                <rect x="14" y="3" width="7" height="5" />
+                                <rect x="14" y="12" width="7" height="9" />
+                                <rect x="3" y="16" width="7" height="5" />
+                            </svg>
+                            <span>Overview</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item" data-section="animals">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                            </svg>
+                            <span>Animals</span>
+                            <span class="nav-badge" id="navAnimalCount">0</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item" data-section="fosters">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                            <span>Foster Families</span>
+                            <span class="nav-badge" id="navFosterCount">0</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item" data-section="careRequirements">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
+                            <span>Care Requirements</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item" data-section="requests">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                            </svg>
+                            <span>Placement Requests</span>
+                            <span class="nav-badge badge-warning" id="navPendingReqCount">0</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item" data-section="matching">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="18" cy="5" r="3" />
+                                <circle cx="6" cy="12" r="3" />
+                                <circle cx="18" cy="19" r="3" />
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                            </svg>
+                            <span>Foster Matching</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item" data-section="placements">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                <polyline points="9 22 9 12 15 12 15 22" />
+                            </svg>
+                            <span>Placements</span>
+                            <span class="nav-badge badge-success" id="navActivePlacementCount">0</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item" data-section="followups">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            <span>Follow-ups</span>
+                            <span class="nav-badge badge-danger hidden" id="navOverdueBadge">!</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Sidebar Footer with User Profile and Sidebar Logout Button -->
+            <div class="sidebar-footer">
+                <div class="user-profile-widget">
+                    <div class="user-avatar-initials">AD</div>
+                    <div class="user-meta">
+                        <span class="user-name" id="displayUserName">Shelter Admin</span>
+                        <span class="user-role">Coordinator</span>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-btn" title="Sign Out of PawHaven">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-viewport">
+
+            <!-- Top Navigation Bar with Topbar Logout Button -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="mobileMenuBtn" class="mobile-toggle" aria-label="Open mobile menu">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg>
+                    </button>
+                    <div class="page-title-wrap">
+                        <h1 id="currentSectionTitle">Dashboard Overview</h1>
+                        <span class="page-tagline" id="currentSectionTagline">Real-time foster network health and
+                            pending alerts</span>
+                    </div>
+                </div>
+
+                <div class="topbar-actions">
+                    <button id="resetDataBtn" class="btn btn-outline btn-sm"
+                        title="Restore original demonstration records">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="1 4 1 10 7 10" />
+                            <polyline points="23 20 23 14 17 14" />
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
+                        </svg>
+                        <span>Reset Demo Data</span>
+                    </button>
+
+                    <!-- Topbar Logout Button -->
+                    <button id="topbarLogoutBtn" class="btn btn-outline btn-sm text-terracotta" title="Logout">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+
+                    <div class="header-status-pill">
+                        <span class="status-indicator-dot"></span>
+                        <span>Live Demonstration</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Alert Notification Banner Container -->
+            <div id="globalNotificationArea" class="notification-container"></div>
+
+            <!-- Scrollable Content Viewport -->
+            <div class="content-body">
+
+                <!-- VIEW 1: OVERVIEW DASHBOARD -->
+                <section id="section-overview" class="view-panel active">
+
+                    <!-- Five Metric Cards -->
+                    <div class="metrics-grid">
+                        <div class="metric-card clickable-card" data-goto="animals">
+                            <div class="metric-icon-box bg-forest-light">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                                </svg>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-label">Total Animals</span>
+                                <span class="metric-value" id="statTotalAnimals">0</span>
+                            </div>
+                            <span class="metric-trend">Tracked in shelter</span>
+                        </div>
+
+                        <div class="metric-card clickable-card" data-goto="fosters">
+                            <div class="metric-icon-box bg-sage-light">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-label">Available Capacity</span>
+                                <span class="metric-value" id="statAvailableCapacity">0</span>
+                            </div>
+                            <span class="metric-trend" id="statCapacitySub">0 of 0 spaces free</span>
+                        </div>
+
+                        <div class="metric-card clickable-card" data-goto="placements">
+                            <div class="metric-icon-box bg-sage-medium">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                </svg>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-label">Active Placements</span>
+                                <span class="metric-value" id="statActivePlacements">0</span>
+                            </div>
+                            <span class="metric-trend">Currently with families</span>
+                        </div>
+
+                        <div class="metric-card clickable-card" data-goto="requests">
+                            <div class="metric-icon-box bg-amber-light">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-label">Pending Requests</span>
+                                <span class="metric-value" id="statPendingRequests">0</span>
+                            </div>
+                            <span class="metric-trend">Awaiting review</span>
+                        </div>
+
+                        <div class="metric-card clickable-card" data-goto="animals" data-filter="urgent">
+                            <div class="metric-icon-box bg-terracotta-light">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                    <line x1="12" y1="9" x2="12" y2="13" />
+                                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                                </svg>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-label">Urgent Foster Cases</span>
+                                <span class="metric-value text-terracotta" id="statUrgentCases">0</span>
+                            </div>
+                            <span class="metric-trend">Critical shelter load</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Bar -->
+                    <div class="quick-actions-bar">
+                        <span class="quick-actions-label">Quick Actions:</span>
+                        <div class="quick-actions-btns">
+                            <button class="btn btn-secondary btn-sm" id="btnQuickAddAnimal">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                                <span>Add Animal</span>
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btnQuickAddFoster">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                                <span>Add Foster Family</span>
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btnQuickCreateRequest">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                </svg>
+                                <span>Create Placement Request</span>
+                            </button>
+                            <button class="btn btn-primary btn-sm" id="btnQuickFindMatch">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="18" cy="5" r="3" />
+                                    <circle cx="6" cy="12" r="3" />
+                                    <circle cx="18" cy="19" r="3" />
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                </svg>
+                                <span>Find Foster Match</span>
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btnQuickRecordFollowup">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                </svg>
+                                <span>Record Follow-up</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Capacity Overview Section -->
+                    <div class="panel-card mb-4">
+                        <div class="panel-header">
+                            <div>
+                                <h2 class="panel-title">Foster Capacity Overview</h2>
+                                <p class="panel-subtitle">Current volunteer utilization across active and available
+                                    homes</p>
+                            </div>
+                            <div class="capacity-stat-badge" id="capacityUtilizationBadge">0% Utilized</div>
+                        </div>
+
+                        <div class="capacity-bar-container">
+                            <div class="capacity-bar-fill" id="capacityBarFill" style="width: 0%;"></div>
+                        </div>
+
+                        <div class="capacity-stats-row">
+                            <div class="cap-col">
+                                <span class="cap-lbl">Total Capacity</span>
+                                <span class="cap-val" id="capTotalSpaces">0 Spaces</span>
+                            </div>
+                            <div class="cap-col">
+                                <span class="cap-lbl">Occupied</span>
+                                <span class="cap-val text-terracotta" id="capOccupiedSpaces">0 Spaces</span>
+                            </div>
+                            <div class="cap-col">
+                                <span class="cap-lbl">Remaining Available</span>
+                                <span class="cap-val text-forest" id="capRemainingSpaces">0 Spaces</span>
+                            </div>
+                            <div class="cap-col">
+                                <span class="cap-lbl">Active Homes</span>
+                                <span class="cap-val" id="capActiveFamilies">0 Homes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Two-Column Overview Split -->
+                    <div class="grid-2-col mb-4">
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <div>
+                                    <h3 class="panel-title">Recent Placement Requests</h3>
+                                    <p class="panel-subtitle">Applications needing approval or review</p>
+                                </div>
+                                <button class="link-btn" data-goto="requests">View All &rarr;</button>
+                            </div>
+                            <div id="overviewRecentRequestsList" class="compact-list-container"></div>
+                        </div>
+
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <div>
+                                    <h3 class="panel-title">Urgent Animal Needs</h3>
+                                    <p class="panel-subtitle">Animals requiring immediate temporary shelter</p>
+                                </div>
+                                <button class="link-btn" data-goto="animals">View All &rarr;</button>
+                            </div>
+                            <div id="overviewUrgentAnimalsList" class="compact-list-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Two-Column Dates & Follow-ups Split -->
+                    <div class="grid-2-col">
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <div>
+                                    <h3 class="panel-title">Placements Ending Soon</h3>
+                                    <p class="panel-subtitle">Expiring within 7 days or overdue for return</p>
+                                </div>
+                                <button class="link-btn" data-goto="placements">Manage &rarr;</button>
+                            </div>
+                            <div id="overviewEndingPlacementsList" class="compact-list-container"></div>
+                        </div>
+
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <div>
+                                    <h3 class="panel-title">Follow-up Reminders</h3>
+                                    <p class="panel-subtitle">Scheduled health and behavioral check-ins</p>
+                                </div>
+                                <button class="link-btn" data-goto="followups">All Follow-ups &rarr;</button>
+                            </div>
+                            <div id="overviewFollowupRemindersList" class="compact-list-container"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: ANIMAL MANAGEMENT -->
+                <section id="section-animals" class="view-panel">
+                    <div class="panel-toolbar">
+                        <div class="filter-group">
+                            <div class="search-input-wrap">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                                <input type="text" id="animalSearchInput" placeholder="Search by name, breed, ID...">
+                            </div>
+
+                            <select id="animalSpeciesFilter" class="select-control">
+                                <option value="all">All Species</option>
+                                <option value="Dog">Dogs</option>
+                                <option value="Cat">Cats</option>
+                                <option value="Rabbit">Rabbits</option>
+                            </select>
+
+                            <select id="animalUrgencyFilter" class="select-control">
+                                <option value="all">All Urgency Levels</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Standard">Standard</option>
+                            </select>
+
+                            <select id="animalStatusFilter" class="select-control">
+                                <option value="all">All Statuses</option>
+                                <option value="Needs Foster">Needs Foster</option>
+                                <option value="Match Available">Match Available</option>
+                                <option value="Placement Pending">Placement Pending</option>
+                                <option value="In Foster Care">In Foster Care</option>
+                                <option value="Placement Completed">Placement Completed</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" id="openAddAnimalModalBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            <span>Add Animal</span>
+                        </button>
+                    </div>
+
+                    <div id="animalCardsGrid" class="cards-grid"></div>
+                </section>
+
+                <!-- VIEW 3: FOSTER FAMILIES -->
+                <section id="section-fosters" class="view-panel">
+                    <div class="panel-toolbar">
+                        <div class="filter-group">
+                            <div class="search-input-wrap">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                                <input type="text" id="fosterSearchInput" placeholder="Search by family name, phone...">
+                            </div>
+
+                            <select id="fosterSpeciesFilter" class="select-control">
+                                <option value="all">All Preferred Species</option>
+                                <option value="Dog">Dogs</option>
+                                <option value="Cat">Cats</option>
+                                <option value="Both">Both (Dogs & Cats)</option>
+                            </select>
+
+                            <select id="fosterAvailabilityFilter" class="select-control">
+                                <option value="all">All Availability</option>
+                                <option value="Available">Available</option>
+                                <option value="Limited Capacity">Limited Capacity</option>
+                                <option value="Full">Full</option>
+                                <option value="Temporarily Unavailable">Temporarily Unavailable</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" id="openAddFosterModalBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            <span>Add Foster Family</span>
+                        </button>
+                    </div>
+
+                    <div id="fosterCardsGrid" class="cards-grid"></div>
+                </section>
+
+                <!-- VIEW 4: CARE REQUIREMENTS DIRECTORY -->
+                <section id="section-careRequirements" class="view-panel">
+                    <div class="panel-intro mb-4">
+                        <h2>Animal Care Requirements & Protocols</h2>
+                        <p>Critical housing criteria, medication regimens, behavioural considerations, and caregiver
+                            experience levels evaluated during algorithmic placement matching.</p>
+                    </div>
+                    <div id="careRequirementsGrid" class="cards-grid"></div>
+                </section>
+
+                <!-- VIEW 5: PLACEMENT REQUESTS -->
+                <section id="section-requests" class="view-panel">
+                    <div class="panel-toolbar">
+                        <div class="filter-group">
+                            <select id="requestStatusFilter" class="select-control">
+                                <option value="all">All Request Statuses</option>
+                                <option value="Pending">Pending Review</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="openCreateRequestModalBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            <span>Create Placement Request</span>
+                        </button>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID</th>
+                                        <th>Animal</th>
+                                        <th>Proposed Foster Family</th>
+                                        <th>Requested Timeline</th>
+                                        <th>Priority</th>
+                                        <th>Special Care Included</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="placementRequestsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 6: FOSTER MATCHING ALGORITHM -->
+                <section id="section-matching" class="view-panel">
+                    <div class="matching-control-panel panel-card mb-4">
+                        <h2>Rule-Based Foster Matching Algorithm</h2>
+                        <p>Select an animal to evaluate compatibility across capacity, species preferences, medical
+                            capabilities, caregiver experience, and placement duration.</p>
+                        <div class="matching-selector-row" style="margin-top: 0.75rem;">
+                            <label for="matchAnimalSelect"><strong>Select Animal Requiring Placement:</strong></label>
+                            <div class="matching-dropdown-group">
+                                <select id="matchAnimalSelect" class="select-control match-picker"></select>
+                                <button id="runMatchCalculationBtn" class="btn btn-primary">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <polygon points="5 3 19 12 5 21 5 3" />
+                                    </svg>
+                                    <span>Evaluate Compatibility</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="viva-scoring-guide" style="margin-top: 1rem;">
+                            <span class="viva-badge">College Viva Formula</span>
+                            <strong>100-Point Algorithmic Scoring Model:</strong>
+                            Capacity (30 pts) + Species (25 pts) + Medical/Special Care (20 pts) + Experience (15 pts) +
+                            Duration (10 pts).
+                        </div>
+                    </div>
+                    <div id="matchingSubjectCard" class="matching-subject-container hidden mb-4"></div>
+                    <div id="matchingResultsContainer"></div>
+                </section>
+
+                <!-- VIEW 7: PLACEMENTS MANAGEMENT -->
+                <section id="section-placements" class="view-panel">
+                    <div class="panel-toolbar">
+                        <div class="filter-group">
+                            <select id="placementStatusFilter" class="select-control">
+                                <option value="all">All Placement Statuses</option>
+                                <option value="Active">Active Placements</option>
+                                <option value="Ending Soon">Ending Soon (&le; 7 days)</option>
+                                <option value="Extended">Extended</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Placement ID</th>
+                                        <th>Animal</th>
+                                        <th>Foster Family</th>
+                                        <th>Placement Duration</th>
+                                        <th>Days Remaining</th>
+                                        <th>Status</th>
+                                        <th>Next Follow-up</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="placementsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 8: FOLLOW-UP RECORDS -->
+                <section id="section-followups" class="view-panel">
+                    <div class="panel-toolbar">
+                        <div class="filter-group">
+                            <select id="followupStatusFilter" class="select-control">
+                                <option value="all">All Follow-ups</option>
+                                <option value="Upcoming">Upcoming Scheduled</option>
+                                <option value="Completed">Completed Records</option>
+                                <option value="Overdue">Overdue Alerts</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="openAddFollowupModalBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            <span>Record Follow-up</span>
+                        </button>
+                    </div>
+                    <div id="followupsTimeline" class="timeline-container"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Add / Edit Animal -->
+    <div id="animalModal" class="modal-backdrop hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="animalModalTitle">Add Animal Profile</h3>
+                <button class="modal-close-btn" data-close-modal="animalModal">&times;</button>
+            </div>
+            <form id="animalForm" class="modal-body">
+                <input type="hidden" id="formAnimalId">
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formAnimalName">Animal Name *</label>
+                        <input type="text" id="formAnimalName" required placeholder="e.g. Bella">
+                    </div>
+                    <div class="form-group">
+                        <label for="formAnimalSpecies">Species *</label>
+                        <select id="formAnimalSpecies" required>
+                            <option value="Dog">Dog</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Rabbit">Rabbit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formAnimalBreed">Breed</label>
+                        <input type="text" id="formAnimalBreed" placeholder="e.g. Golden Retriever mix">
+                    </div>
+                    <div class="form-group">
+                        <label for="formAnimalAge">Age</label>
+                        <input type="text" id="formAnimalAge" placeholder="e.g. 2 years">
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formAnimalGender">Gender</label>
+                        <select id="formAnimalGender">
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formAnimalUrgency">Urgency Level *</label>
+                        <select id="formAnimalUrgency" required>
+                            <option value="Standard">Standard</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formAnimalVaccination">Vaccination Status</label>
+                        <select id="formAnimalVaccination">
+                            <option value="Up-to-Date">Up-to-Date</option>
+                            <option value="Pending Booster">Pending Booster</option>
+                            <option value="Not Vaccinated">Not Vaccinated</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formAnimalDuration">Required Foster Duration</label>
+                        <select id="formAnimalDuration">
+                            <option value="Short-term (1-2 weeks)">Short-term (1-2 weeks)</option>
+                            <option value="Medium-term (3-6 weeks)">Medium-term (3-6 weeks)</option>
+                            <option value="Long-term (2+ months)">Long-term (2+ months)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="formAnimalHealth">Health Condition & Medical Notes</label>
+                    <input type="text" id="formAnimalHealth" placeholder="e.g. Post-surgery recovery">
+                </div>
+                <div class="form-group">
+                    <label for="formAnimalTemperament">Temperament & Behavior</label>
+                    <input type="text" id="formAnimalTemperament" placeholder="e.g. Calm, friendly">
+                </div>
+                <div class="form-group">
+                    <label for="formAnimalCareReq">Special Care Requirements</label>
+                    <textarea id="formAnimalCareReq" rows="2"
+                        placeholder="List specific care instructions..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="formAnimalPhoto">Image URL (Optional)</label>
+                    <input type="url" id="formAnimalPhoto" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-close-modal="animalModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Animal Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add / Edit Foster Family -->
+    <div id="fosterModal" class="modal-backdrop hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="fosterModalTitle">Add Foster Family Profile</h3>
+                <button class="modal-close-btn" data-close-modal="fosterModal">&times;</button>
+            </div>
+            <form id="fosterForm" class="modal-body">
+                <input type="hidden" id="formFosterId">
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formFosterName">Caregiver / Family Name *</label>
+                        <input type="text" id="formFosterName" required placeholder="e.g. Sarah & David Jenkins">
+                    </div>
+                    <div class="form-group">
+                        <label for="formFosterContact">Contact (Phone / Email) *</label>
+                        <input type="text" id="formFosterContact" required placeholder="555-0192 | sarah@example.com">
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formFosterSpecies">Preferred Species *</label>
+                        <select id="formFosterSpecies" required>
+                            <option value="Both">Both Dogs & Cats</option>
+                            <option value="Dog">Dogs Only</option>
+                            <option value="Cat">Cats Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formFosterCapacity">Maximum Animal Capacity *</label>
+                        <input type="number" id="formFosterCapacity" min="1" max="5" value="2" required>
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formFosterHome">Home Environment</label>
+                        <select id="formFosterHome">
+                            <option value="House with Fenced Yard">House with Fenced Yard</option>
+                            <option value="Apartment (Pet-Friendly)">Apartment (Pet-Friendly)</option>
+                            <option value="Suburban Home with Garden">Suburban Home with Garden</option>
+                            <option value="Rural Acreage">Rural Acreage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formFosterExperience">Caregiver Experience</label>
+                        <select id="formFosterExperience">
+                            <option value="Advanced / Medical Care">Advanced / Medical Care</option>
+                            <option value="Intermediate / Multi-Pet">Intermediate / Multi-Pet</option>
+                            <option value="Beginner / Gentle Companions">Beginner / Gentle Companions</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formFosterAvailability">Current Availability</label>
+                        <select id="formFosterAvailability">
+                            <option value="Available">Available</option>
+                            <option value="Temporarily Unavailable">Temporarily Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formFosterDuration">Preferred Duration</label>
+                        <select id="formFosterDuration">
+                            <option value="Any Duration">Any Duration</option>
+                            <option value="Short-term (1-2 weeks)">Short-term (1-2 weeks)</option>
+                            <option value="Medium-term (3-6 weeks)">Medium-term (3-6 weeks)</option>
+                            <option value="Long-term (2+ months)">Long-term (2+ months)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="formFosterSpecialCare">
+                        <span class="custom-checkmark"></span>
+                        <span class="checkbox-label">Trained and equipped for special medical/behavioural care</span>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-close-modal="fosterModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Foster Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Create Placement Request -->
+    <div id="requestModal" class="modal-backdrop hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Create Placement Request</h3>
+                <button class="modal-close-btn" data-close-modal="requestModal">&times;</button>
+            </div>
+            <form id="requestForm" class="modal-body">
+                <div class="form-group">
+                    <label for="formRequestAnimal">Animal Requiring Foster *</label>
+                    <select id="formRequestAnimal" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="formRequestFoster">Proposed Foster Family *</label>
+                    <select id="formRequestFoster" required></select>
+                    <small class="helper-text" id="requestCapacityHelper"></small>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formRequestStart">Requested Start Date *</label>
+                        <input type="date" id="formRequestStart" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formRequestEnd">Expected End Date *</label>
+                        <input type="date" id="formRequestEnd" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="formRequestPriority">Placement Priority</label>
+                    <select id="formRequestPriority">
+                        <option value="Standard">Standard</option>
+                        <option value="High">High</option>
+                        <option value="Urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="formRequestNotes">Special Care Agreement</label>
+                    <textarea id="formRequestNotes" rows="2" placeholder="Care details..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-close-modal="requestModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Record Follow-up -->
+    <div id="followupModal" class="modal-backdrop hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Record Foster Follow-up</h3>
+                <button class="modal-close-btn" data-close-modal="followupModal">&times;</button>
+            </div>
+            <form id="followupForm" class="modal-body">
+                <div class="form-group">
+                    <label for="formFollowupPlacement">Active Placement Reference *</label>
+                    <select id="formFollowupPlacement" required></select>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formFollowupDate">Follow-up Date *</label>
+                        <input type="date" id="formFollowupDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formFollowupMethod">Check-in Method *</label>
+                        <select id="formFollowupMethod" required>
+                            <option value="Home Visit">In-Person Home Visit</option>
+                            <option value="Phone Call">Phone Call</option>
+                            <option value="Video Call">Video Consultation</option>
+                            <option value="Shelter Clinic Visit">Shelter Clinic Check-up</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="formFollowupHealth">Health Observations *</label>
+                    <input type="text" id="formFollowupHealth" required placeholder="e.g. Incision healed well">
+                </div>
+                <div class="form-group">
+                    <label for="formFollowupBehavior">Behavioral Observations</label>
+                    <input type="text" id="formFollowupBehavior" placeholder="e.g. Sleeping well, calm">
+                </div>
+                <div class="form-group">
+                    <label for="formFollowupFeedback">Caregiver Feedback</label>
+                    <textarea id="formFollowupFeedback" rows="2" placeholder="Notes from foster family..."></textarea>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="formFollowupNextDate">Next Scheduled Follow-up</label>
+                        <input type="date" id="formFollowupNextDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="formFollowupSteps">Recommended Next Steps</label>
+                        <input type="text" id="formFollowupSteps" placeholder="e.g. Booster in 10 days">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-close-modal="followupModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Details Dialog -->
+    <div id="detailsModal" class="modal-backdrop hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="detailsModalTitle">Profile Details</h3>
+                <button class="modal-close-btn" data-close-modal="detailsModal">&times;</button>
+            </div>
+            <div class="modal-body" id="detailsModalContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-close-modal="detailsModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmation Dialog -->
+    <div id="confirmModal" class="modal-backdrop hidden">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-header">
+                <h3 id="confirmModalTitle">Please Confirm</h3>
+                <button class="modal-close-btn" data-close-modal="confirmModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmModalMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-close-modal="confirmModal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmModalActionBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
